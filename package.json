@@ -35,5 +35,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "lodash": "^4.17.21",
+    "react-router-dom": "^7.6.2",
+    "styled-components": "^6.1.19"
   }
 }
