@@ -30,8 +30,8 @@ export const SearchInputContainer = styled.div(
 );
 
 export const SearchInputStyled = styled.input(
-  ({ theme: { colors, fontSizes } }) => css`
-    flex: 1;
+  ({ theme: { colors, fontSizes, breakpoint } }) => css`
+    flex-grow: 1;
     min-height: 24px;
     padding-left: 0;
     font-size: ${fontSizes[7]}px;
@@ -42,6 +42,11 @@ export const SearchInputStyled = styled.input(
 
     &::placeholder {
       color: ${colors.text.disabled};
+    }
+
+    ${breakpoint.xs} {
+      flex-grow: 0;
+      width: 100%;
     }
   `,
 );

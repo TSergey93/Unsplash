@@ -17,8 +17,7 @@ export const GalleryWrapper = styled.section(
     }
 
     ${breakpoint.xs} {
-      margin-bottom: 0;
-      padding-bottom: ${space[2]}px;
+      margin-bottom: ${space[2]}px;
     }
 `);
 

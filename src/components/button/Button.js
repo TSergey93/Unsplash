@@ -5,7 +5,7 @@ export const Button = styled.button.attrs(() => ({ role: 'button' }))(
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 84px;
+    min-width: 84px;
     font-family: inherit;
     font-size: inherit;
     color: ${colors.text.secondary};
