@@ -15,6 +15,6 @@ export const Button = styled.button.attrs(() => ({ role: 'button' }))(
     transition: 0.2s ease-in-out background;
       
     &:hover {
-      background: ${colors.primary.dark};
+      background: ${colors.secondary.main};
     }
 `);

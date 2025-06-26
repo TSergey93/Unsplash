@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { isEqual, debounce, throttle } from 'lodash';
 
 const TIMEOUT = 250;
-const SCROLL_THRESHOLD = 300;
-const INITIAL_DATA = { data: [], totalPages: 0 };
+const SCROLL_THRESHOLD = 400;
+const INITIAL_DATA = { data: [], totalPages: 0, error: null };
 
 const useScrollRequest = (requestFn, variables = {}) => {
   const prevPageRef = useRef(null);
@@ -11,7 +11,7 @@ const useScrollRequest = (requestFn, variables = {}) => {
 
   const [isLoading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [{ data, totalPages }, setData] = useState(INITIAL_DATA);
+  const [{ data, totalPages, error }, setData] = useState(INITIAL_DATA);
   const [variablesState, setVariablesState] = useState(variables);
 
   // Обновление переменных и сброс страницы
@@ -32,16 +32,17 @@ const useScrollRequest = (requestFn, variables = {}) => {
 
     setLoading(true);
 
-    requestFn({...variablesRef.current, page}).then(({ results, totalPages }) => {
-      setData(prev => ({
-        data: [...prev.data, ...results],
-        totalPages,
-      }));
-    }, () => {
-      setData(INITIAL_DATA);
-    }).finally(() => {
-      setLoading(false);
-    });
+    requestFn({...variablesRef.current, page})
+      .then(({ data: resultData, totalPages, error }) => {
+        setData(prev => ({
+          data: [...prev.data, ...resultData],
+          totalPages,
+          error,
+        }));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, [page, variables, variablesState, requestFn]);
 
   // Догрузка данных для заполнения первого экрана
@@ -86,7 +87,7 @@ const useScrollRequest = (requestFn, variables = {}) => {
     };
   }, [isLoading, page, totalPages, setPage]);
 
-  return { isLoading: isLoading && page === 1, data };
+  return { isLoading: isLoading && page === 1, data, error };
 }
 
 export { useScrollRequest };

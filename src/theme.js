@@ -1,19 +1,21 @@
 export const colors = {
   white: '#FFFFFF',
-  background: '#F5F6F8',
   border: '#EBEBEB',
 
   text: {
     primary: '#000000',
-    secondary: '#ffffff',
+    secondary: '#FFFFFF',
     tertiary: '#787878',
-    disabled: '#9C9C9C',
   },
 
   primary: {
     main: '#EB0C0C',
-    dark: '#C30000',
-    disabled: '#EEEEEE',
+    dark: '#EEEEEE',
+  },
+
+  secondary: {
+    main: '#C30000',
+    dark: '#E6E6E6',
   },
 
   highlight: [

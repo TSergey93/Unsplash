@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { ReactComponent as PhotoCloseIcon } from '../../assets/icons/photo-close-icon.svg';
+import { ReactComponent as PhotoCloseIcon } from '../../../assets/icons/photo-close-icon.svg';
 
 export const PhotoViewerOverlay = styled.div(
   ({ theme: { colors, breakpoint } }) => css`
@@ -21,28 +21,22 @@ export const PhotoViewerOverlay = styled.div(
 
 export const PhotoViewerImage = styled.img(
   ({ theme: { breakpoint } }) => css`
-    width: 80%;
-    max-width: 760px;
+    max-width: 85vw;
+    max-height: 85vh;
       
     ${breakpoint.m} {
       width: 100%;
       max-width: none;  
+      max-height: none;  
     }
 `);
 
 export const PhotoViewerClose = styled(PhotoCloseIcon)(
-  ({ theme: { colors, breakpoint } }) => css`
+  ({ theme: { breakpoint } }) => css`
     position: absolute;
     top: 24px;
     right: 24px;
     cursor: pointer;
-      
-    &::before, &::after {
-      content: '';
-      width: 20px;
-      height: 2px;
-      background-color: ${colors.highlight[1]};
-    }
       
     ${breakpoint.m} {
       top: 16px;

@@ -6,6 +6,7 @@ export const SearchInputWrapper = styled.div(
     display: flex;
     gap: ${space[1]}px;
     width: 100%;
+    max-width: 512px;
   `,
 );
 
@@ -15,17 +16,23 @@ export const SearchInputContainer = styled.div(
     flex-grow: 1;
     align-items: center;
     gap: ${space[0]}px;
+    height: 48px;
     padding: 0 ${space[1]}px;
-    background: ${colors.primary.disabled};
+    background: ${colors.primary.dark};
     border-radius: ${borderRadius[1]}px;
     cursor: pointer;
+    transition: 0.2s ease-in-out background;
+      
+    &:hover {
+      background: ${colors.secondary.dark};
+    }
   `,
 );
 
 export const SearchInputStyled = styled.input(
   ({ theme: { colors, fontSizes } }) => css`
-    width: 100%;
-    height: 48px;
+    flex: 1;
+    min-height: 24px;
     padding-left: 0;
     font-size: ${fontSizes[7]}px;
     font-weight: 400;

@@ -11,7 +11,7 @@ const useSearchParams = () => {
     if (searchValue.trim() === '') {
       navigate('.', { replace: true });
     } else {
-      navigate(`?search=${searchValue}`);
+      navigate(`?search=${encodeURIComponent(searchValue)}`);
     }
   };
 
