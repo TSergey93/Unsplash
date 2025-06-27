@@ -4,8 +4,13 @@ import { isEqual, debounce, throttle } from 'lodash';
 const TIMEOUT = 250;
 const SCROLL_THRESHOLD = 400;
 const INITIAL_DATA = { data: [], totalPages: 0, error: null };
+const OBSERVE_OPTIONS = {
+  root: null,
+  rootMargin: `0px 0px ${SCROLL_THRESHOLD}px 0px`,
+  threshold: 1,
+};
 
-const useScrollRequest = (requestFn, variables = {}) => {
+const useScrollRequest = (requestFn, variables = {}, blockRef) => {
   const prevPageRef = useRef(null);
   const variablesRef = useRef(variables);
 
@@ -65,27 +70,27 @@ const useScrollRequest = (requestFn, variables = {}) => {
     };
   }, [isLoading, data]);
 
-  // Проверка глубины скролла и догрузка данных
+  // Догрузка данных при скролле
   useEffect(() => {
-    const handleNextPage = debounce(() => {
-      const scrollTop = document.documentElement.scrollTop;
-      const windowHeight = global.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
+    const observer = new IntersectionObserver(debounce(
+      ([entry]) => {
+        if (entry.isIntersecting && !isLoading && page < totalPages) {
+          setPage(prev => prev + 1);
+        }
+      }, TIMEOUT),
+      OBSERVE_OPTIONS,
+    );
 
-      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
-      const isScrolledToBottom = distanceFromBottom <= SCROLL_THRESHOLD;
-
-      if (!isLoading && isScrolledToBottom && page < totalPages) {
-        setPage(prev => prev + 1);
-      }
-    }, TIMEOUT);
-
-    global.addEventListener('scroll', handleNextPage);
+    if (blockRef?.current) {
+      observer.observe(blockRef.current);
+    }
 
     return () => {
-      global.removeEventListener('scroll', handleNextPage);
+      if (blockRef?.current) {
+        observer.unobserve(blockRef.current);
+      }
     };
-  }, [isLoading, page, totalPages, setPage]);
+  }, [isLoading, page, totalPages, blockRef]);
 
   return { isLoading: isLoading && page === 1, data, error };
 }

@@ -14,7 +14,7 @@ import {
 import { CLIENT_ID, EMPTY_ITEMS_PER_PAGE } from './constants';
 
 const Gallery =  () => {
-  const galleryWrapperRef = useRef(null);
+  const observeElementRef = useRef(null);
   const [searchParam] = useSearchParams();
   const toggleScrollLock = useScrollLock();
 
@@ -23,14 +23,15 @@ const Gallery =  () => {
   const { isLoading, data: images, error: isEndOfData } = useScrollRequest(
     searchParam && fetchGallery,
     { id: CLIENT_ID, search: searchParam },
+    observeElementRef,
   );
 
   // Определение количества пустых элементов в последней строке
   /* useEffect(() => {
     const fillEmptyItems = throttle(() => {
-      if (galleryWrapperRef.current && images.length > 0) {
-        const containerWidth = galleryWrapperRef.current.clientWidth;
-        const firstImage = galleryWrapperRef.current.children[0];
+      if (galleryContainerRef.current && images.length > 0) {
+        const containerWidth = galleryContainerRef.current.clientWidth;
+        const firstImage = galleryContainerRef.current.children[0];
         const firstImageWidth = firstImage.getBoundingClientRect().width;
 
         const itemsPerRow = Math.floor(containerWidth / firstImageWidth);
@@ -70,7 +71,7 @@ const Gallery =  () => {
             <GallerySearchText>К сожалению, поиск не дал результатов</GallerySearchText>
           ) : (
             <Fragment>
-              <GalleryContainer ref={galleryWrapperRef}>
+              <GalleryContainer>
                 {images.map(image => (
                   <GalleryImageWrapper
                     key={image.id}
@@ -94,6 +95,7 @@ const Gallery =  () => {
               )}
             </Fragment>
           )}
+          <div ref={observeElementRef} />
         </Fragment>
       )}
     </GalleryWrapper>
